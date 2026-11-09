@@ -59,6 +59,14 @@ class Application:
         self.logger.log_event(f"[INFO]: CRC32 result {crc_result}")
         return crc_result
 
+    def send_loaded_file(self):
+        self.logger.log_event("[INFO]: Start sending file")
+        if self.loaded_file == None:
+            self.logger.log_event("[ERROR]: No file loaded.")
+            raise FileNotFoundError(f"File not found.")
+        time.sleep(5)  # replace with send via LoRa
+        self.logger.log_event("[INFO]: File sent")
+
     def start_sending_stream_data(self, report_sending_data: Callable[[int], None]):
         self.logger.log_event("[INFO]: Start sending stream data")
         self.stream_data_generator.reset()
