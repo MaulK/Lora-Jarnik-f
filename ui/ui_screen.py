@@ -45,7 +45,7 @@ class UIScreen:
             set_next_screen_fn=self._set_next_screen
         )
         self.receiver_stream_menu = ReceiverStreamMenu(
-            set_next_screen_fn=self._set_next_screen
+            set_next_screen_fn=self._set_next_screen, application=application
         )
 
     def _set_next_screen(self, target: UIMenu):
