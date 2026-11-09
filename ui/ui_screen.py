@@ -6,6 +6,7 @@ from .sender_stream_menu import SenderStreamMenu
 from .receiver_menu import ReceiverMenu
 from .receiver_file_menu import ReceiverFileMenu
 from .receiver_stream_menu import ReceiverStreamMenu
+from app.application import Application
 
 
 class UIScreen:
@@ -20,11 +21,22 @@ class UIScreen:
         "receiver_stream_menu",
     )
 
-    def __init__(self):
+    current_screen: UIMenu
+    main_menu: MainMenu
+    sender_menu: SenderMenu
+    sender_file_menu: SenderFileMenu
+    sender_stream_menu: SenderStreamMenu
+    receiver_menu: ReceiverMenu
+    receiver_file_menu: ReceiverFileMenu
+    receiver_stream_menu: ReceiverStreamMenu
+
+    def __init__(self, application: Application):
         self.current_screen = UIMenu.MAIN
         self.main_menu = MainMenu(set_next_screen_fn=self._set_next_screen)
         self.sender_menu = SenderMenu(set_next_screen_fn=self._set_next_screen)
-        self.sender_file_menu = SenderFileMenu(set_next_screen_fn=self._set_next_screen)
+        self.sender_file_menu = SenderFileMenu(
+            set_next_screen_fn=self._set_next_screen, application=application
+        )
         self.sender_stream_menu = SenderStreamMenu(
             set_next_screen_fn=self._set_next_screen
         )
