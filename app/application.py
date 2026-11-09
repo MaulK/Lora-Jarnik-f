@@ -8,6 +8,7 @@ from .stream_data_verifier import StreamDataVerifier
 from datetime import datetime
 import time
 from typing import Callable
+from pathlib import Path
 
 
 class Application:
@@ -19,6 +20,7 @@ class Application:
         "stream_data_generator",
         "stream_data_verifier",
         "data_stream_logger",
+        "received_file",
     )
 
     logger: SystemLogger
@@ -28,6 +30,7 @@ class Application:
     stream_data_generator: StreamDataGenerator
     stream_data_verifier: StreamDataVerifier
     data_stream_logger: DataStreamLogger
+    received_file: File | None
 
     def __init__(
         self,
@@ -45,6 +48,7 @@ class Application:
         self.stream_data_generator = stream_data_generator
         self.stream_data_verifier = stream_data_verifier
         self.data_stream_logger = data_stream_logger
+        self.received_file = None
 
     def load_file(self, path: str):
         self.logger.log_event(f"[INFO]: Load file {path}")
@@ -86,6 +90,22 @@ class Application:
             self.logger.log_event(f"[INFO]: Sending stream data: {current_data}")
             report_sending_data(current_data)
             time.sleep(1)  # replace with send with LoRa
+
+    def start_receiving_file(self):
+        self.logger.log_event("[INFO]: Start receiving file")
+        dummy_file_content = bytes("AWOKWOKWOKWOKWOKWOKWOKWOKWOK", "utf-8")
+        time.sleep(5)
+
+        # received_data is full file content. merge chunks must be done before this
+        received_data = dummy_file_content
+
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        filepath = Path(f"logs/received_file_{timestamp}.bin")
+        filepath_str = str(filepath.resolve())
+
+        self.received_file = File(filepath_str, received_data)
+        self.file_storage.save_file(self.received_file)
+        self.logger.log_event(f"[INFO]: File received: {filepath_str}")
 
     def start_receiving_stream_data(
         self, report_receiving_data: Callable[[int, bool], None]
