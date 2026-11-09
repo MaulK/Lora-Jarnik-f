@@ -106,6 +106,16 @@ class Application:
         self.received_file = File(filepath_str, received_data)
         self.file_storage.save_file(self.received_file)
         self.logger.log_event(f"[INFO]: File received: {filepath_str}")
+        self.calculate_crc32_of_received_file()
+
+    def calculate_crc32_of_received_file(self) -> str:
+        self.logger.log_event("[INFO]: Calculating CRC32 of received file")
+        if self.received_file == None:
+            self.logger.log_event("[ERROR]: No received file.")
+            raise FileNotFoundError(f"File not found.")
+        crc_result = self.crc32_calculator.get_crc32(self.received_file.data)
+        self.logger.log_event(f"[INFO]: CRC32 result {crc_result}")
+        return crc_result
 
     def start_receiving_stream_data(
         self, report_receiving_data: Callable[[int, bool], None]

@@ -39,7 +39,7 @@ class ReceiverFileMenu:
             if choice == "1":
                 self._show_receive_file()
             elif choice == "2":
-                pass
+                self._show_crc32()
             elif choice == "0":
                 self.want_to_move = True
                 self.set_next_screen_fn(UIMenu.RECEIVER)
@@ -47,6 +47,19 @@ class ReceiverFileMenu:
                 print()
                 print("!!! INVALID SELECTION !!!")
                 print()
+
+    def _show_crc32(self):
+        print()
+        try:
+            crc32 = self.application.calculate_crc32_of_received_file()
+            print("CRC32:")
+            print(crc32)
+        except FileNotFoundError:
+            print("No received file. Please receive file using option 1 first.")
+        except Exception as e:
+            print(f"Unhandled error: {e}")
+        print()
+        input("Press Enter to continue...")
 
     def _show_receive_file(self):
         print()
