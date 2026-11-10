@@ -55,6 +55,7 @@ class Application:
         try:
             self.loaded_file = self.file_storage.read_file(path=path)
             self.logger.log_event("[INFO]: File loaded.")
+            self.calculate_crc32_of_loaded_file()
         except Exception as e:
             self.logger.log_event(f"[ERROR]: {e}")
             raise e
