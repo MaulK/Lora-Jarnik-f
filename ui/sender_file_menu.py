@@ -44,7 +44,7 @@ class SenderFileMenu:
             elif choice == "2":
                 self._show_crc32()
             elif choice == "3":
-                pass
+                self._show_send_file_report()
             elif choice == "0":
                 self.want_to_move = True
                 self.set_next_screen_fn(UIMenu.SENDER)
@@ -78,6 +78,19 @@ class SenderFileMenu:
             crc32 = self.application.calculate_crc32_of_loaded_file()
             print("CRC32:")
             print(crc32)
+        except FileNotFoundError:
+            print("No loaded file. Please load file using option 1 first.")
+        except Exception as e:
+            print(f"Unhandled error: {e}")
+        print()
+        input("Press Enter to continue...")
+
+    def _show_send_file_report(self):
+        print()
+        print("Sending file...")
+        try:
+            self.application.send_loaded_file()
+            print("File sent.")
         except FileNotFoundError:
             print("No loaded file. Please load file using option 1 first.")
         except Exception as e:

@@ -38,14 +38,14 @@ class UIScreen:
             set_next_screen_fn=self._set_next_screen, application=application
         )
         self.sender_stream_menu = SenderStreamMenu(
-            set_next_screen_fn=self._set_next_screen
+            set_next_screen_fn=self._set_next_screen, application=application
         )
         self.receiver_menu = ReceiverMenu(set_next_screen_fn=self._set_next_screen)
         self.receiver_file_menu = ReceiverFileMenu(
-            set_next_screen_fn=self._set_next_screen
+            set_next_screen_fn=self._set_next_screen, application=application
         )
         self.receiver_stream_menu = ReceiverStreamMenu(
-            set_next_screen_fn=self._set_next_screen
+            set_next_screen_fn=self._set_next_screen, application=application
         )
 
     def _set_next_screen(self, target: UIMenu):
